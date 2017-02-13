@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SwyftBooks</string>
+    <string name="swyftbooks">SwyftBooks</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="create_account">Create Account</string>
+    <string name="continue_as_guest">Continue as Guest</string>
+    <string name="login">Login</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="history">History</string>
+    <string name="scan">Scan</string>
+    <string name="share">Share</string>
+    <string name="logout">Logout</string>
+    <string name="search_hint">Enter ISBN, Title or Author</string>
+    <string name="subject">Check out this App!</string>
+</resources>

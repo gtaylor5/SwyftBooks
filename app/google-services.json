@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "183732433567",
+    "firebase_url": "https://swyftbooks-1470629874245.firebaseio.com",
+    "project_id": "swyftbooks-1470629874245",
+    "storage_bucket": "swyftbooks-1470629874245.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183732433567:android:5f1a67a76acc9b53",
+        "android_client_info": {
+          "package_name": "com.swyftlabs.swyftbooks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183732433567-ph919db672p0l2in22j55p1rp79vuef3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARWpxmnizQtmZI1AbyuDLdORoUkpgr6sM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

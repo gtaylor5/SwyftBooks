@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/logout"
+        android:enabled="true"
+        android:title="@string/logout"
+        android:icon="@mipmap/logouticon"
+        app:showAsAction="always|withText"
+        />
+    <item
+        android:id="@+id/share"
+        android:enabled="true"
+        android:title="@string/share"
+        android:icon="@mipmap/shareicon"
+        app:showAsAction="always|withText"
+        />
+    <item
+        android:id="@+id/scan"
+        android:enabled="true"
+        android:title="@string/scan"
+        android:icon="@mipmap/scanicon"
+        app:showAsAction="always|withText"
+        />
+    <item
+        android:id="@+id/History"
+        android:enabled="true"
+        android:title="@string/history"
+        android:icon="@mipmap/historyicon"
+        app:showAsAction="always|withText"
+        />
+
+</menu>
