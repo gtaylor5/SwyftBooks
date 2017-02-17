@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private AmazonRequest amazonRequest;
     private ArrayList<ResultItem> items = new ArrayList<>();
     private LinearLayoutManager manager;
+    private int currentPage = 1;
 
     @Override
     protected void onStart() {
@@ -146,6 +147,21 @@ public class MainActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 manager.setSmoothScrollbarEnabled(true);
                 counter.setText(manager.findFirstVisibleItemPosition()+1 + "/" + manager.getItemCount());
+                if(manager.findFirstVisibleItemPosition() >= manager.getItemCount()-2){
+                    reloadData();
+                }
+            }
+        });
+    }
+
+    public void reloadData() {
+        amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
+            @Override
+            public void onSuccess(ArrayList<ResultItem> items) {
+                counter.setVisibility(View.VISIBLE);
+                items.addAll(amazonRequest.getItems());
+                adapter.dataSetChaged(items);
+                currentPage++;
             }
         });
     }
@@ -159,13 +175,14 @@ public class MainActivity extends AppCompatActivity {
                         showToast("Please enter an ISBN, Title or Author.");
                         return false;
                     }
-                    amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), 1, new ServerCallback() {
+                    amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
                         @Override
                         public void onSuccess(ArrayList<ResultItem> items) {
                             counter.setVisibility(View.VISIBLE);
                             items = amazonRequest.getItems();
                             adapter.dataSetChaged(items);
                             setRecyclerViewListener();
+                            currentPage++;
                         }
                     });
 
