@@ -23,11 +23,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class CreateAccountActivity extends AppCompatActivity {
@@ -71,6 +76,24 @@ public class CreateAccountActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null) {
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference userRef = database.getReference("Users").child(user.getUid());
+                    DatabaseReference schoolRef = database.getReference("Schools").child(schoolTextView.getText().toString());
+
+                    //Store user sign up information
+
+                    HashMap<String, String> userInfo = new HashMap<String, String>();
+                    userInfo.put("Date Joined", new SimpleDateFormat("MMM-dd-yyyy").format(new Date()));
+                    userInfo.put("User", user.getEmail());
+                    userInfo.put("DeviceType", "Android");
+                    userInfo.put("School", schoolTextView.getText().toString());
+                    userRef.setValue(userInfo);
+
+                    //Store user information in school reference
+
+                    schoolRef.child("Students").child(user.getUid()).setValue(emailText.getText().toString());
+
                     segue(MainActivity.class);
                     showToast("Welcome!");
                     finish();
@@ -184,7 +207,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             showToast("Your email/password fields cannot be blank.");
             return false;
         }
-        String[] arr = email.split("\\@");
+        String[] arr = email.split("@");
         if(arr.length > 2) {
             return false;
         }else {

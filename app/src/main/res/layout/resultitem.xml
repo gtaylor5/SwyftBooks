@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#22ffffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="4dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/bookimage"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/title"
+            />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Book Title"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:id="@+id/title"
+                android:gravity="center_horizontal"
+                android:textSize="18sp"
+                android:layout_above="@+id/author"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Author"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:layout_above="@+id/isbn"
+                android:id="@+id/author"
+                android:gravity="center_horizontal"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:layout_above="@+id/seeOffers"
+                android:id="@+id/isbn"
+                android:text="9780124077263"
+                android:textSize="14sp"
+                android:gravity="center_horizontal" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/see_offers"
+                android:textColor="@color/white"
+                android:elevation="8dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:textAlignment="gravity"
+                android:background="@color/tabbar"
+                android:id="@+id/seeOffers"
+                android:layout_alignParentBottom="true"/>
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

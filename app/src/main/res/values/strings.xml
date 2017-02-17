@@ -14,4 +14,5 @@
     <string name="logout">Logout</string>
     <string name="search_hint">Enter ISBN, Title or Author</string>
     <string name="subject">Check out this App!</string>
+    <string name="see_offers">See Offers</string>
 </resources>
