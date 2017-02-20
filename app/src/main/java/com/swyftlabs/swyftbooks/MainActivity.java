@@ -1,5 +1,7 @@
 package com.swyftlabs.swyftbooks;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
@@ -10,7 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -56,9 +61,13 @@ public class MainActivity extends AppCompatActivity {
     private String awsSecretKey = "";
 
     private AmazonRequest amazonRequest;
-    private ArrayList<ResultItem> items = new ArrayList<>();
+    public ArrayList<ResultItem> items = new ArrayList<>();
     private LinearLayoutManager manager;
+
     private int currentPage = 1;
+    private int previousPage = 1;
+    private boolean loading = false;
+    private int previousNumberOfItems = 0;
 
     @Override
     protected void onStart() {
@@ -126,42 +135,55 @@ public class MainActivity extends AppCompatActivity {
                     awsSecretKeyID = remoteConfig.getString("AWS_ACCESS_KEY_ID");
                     awsSecretKey = remoteConfig.getString("AWS_SECRET_KEY");
                     amazonRequest = new AmazonRequest(awsSecretKeyID, awsSecretKey);
-                    Log.i("AppInfo", "Got remoteconfig");
-                    Log.i("AppInfo", awsSecretKey);
-                    Log.i("AppInfo", awsSecretKeyID);
                 }else {
                     awsSecretKeyID = remoteConfig.getString("AWS_ACCESS_KEY_ID");
                     awsSecretKey = remoteConfig.getString("AWS_SECRET_KEY");
                     amazonRequest = new AmazonRequest(awsSecretKeyID, awsSecretKey);
-                    Log.i("AppInfo", "succcess");
                 }
             }
         });
     }
-
 
     public void setRecyclerViewListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                manager.setSmoothScrollbarEnabled(true);
-                counter.setText(manager.findFirstVisibleItemPosition()+1 + "/" + manager.getItemCount());
-                if(manager.findFirstVisibleItemPosition() >= manager.getItemCount()-2){
-                    reloadData();
+                int visibleItems = recyclerView.getChildCount();
+                int totalItems = manager.getItemCount();
+                counter.setText(manager.findFirstVisibleItemPosition() + 1 +" of " + totalItems);
+                if(loading){
+                    if(totalItems > previousNumberOfItems){
+                        loading = false;
+                        previousNumberOfItems = totalItems;
+                    }
+                }
+
+                if(!loading && (totalItems - visibleItems) <= (manager.findFirstVisibleItemPosition() + 3)) {
+                    if (currentPage == previousPage) {
+                        currentPage++;
+                        reloadData();
+                        loading = true;
+                    }
                 }
             }
         });
+
+
     }
 
     public void reloadData() {
         amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
             @Override
-            public void onSuccess(ArrayList<ResultItem> items) {
+            public <T> void onSuccess(T items) {
+
+            }
+            @Override
+            public <T> void onSuccess(ArrayList<T> item) {
                 counter.setVisibility(View.VISIBLE);
                 items.addAll(amazonRequest.getItems());
                 adapter.dataSetChaged(items);
-                currentPage++;
+                previousPage++;
             }
         });
     }
@@ -170,19 +192,34 @@ public class MainActivity extends AppCompatActivity {
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                View view = getCurrentFocus();
+                if(view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                }
                 if(actionId == EditorInfo.IME_ACTION_SEARCH){
                     if(searchBar.getText().toString().length() == 0){
                         showToast("Please enter an ISBN, Title or Author.");
                         return false;
                     }
                     amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
+
                         @Override
-                        public void onSuccess(ArrayList<ResultItem> items) {
-                            counter.setVisibility(View.VISIBLE);
+                        public <T> void onSuccess(ArrayList<T> item) {
                             items = amazonRequest.getItems();
                             adapter.dataSetChaged(items);
                             setRecyclerViewListener();
-                            currentPage++;
+                            if(items.size() != 0) {
+                                counter.setVisibility(View.VISIBLE);
+                                counter.setText(manager.findFirstVisibleItemPosition() + 1 + "/" + items.size());
+                            }else{
+                                showToast("There were no results to show. Please try again.");
+                            }
+                        }
+
+                        @Override
+                        public <T> void onSuccess(T items) {
+
                         }
                     });
 

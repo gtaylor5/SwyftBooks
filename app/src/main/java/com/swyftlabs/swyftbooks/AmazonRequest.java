@@ -1,15 +1,11 @@
 package com.swyftlabs.swyftbooks;
 
 import android.content.Context;
-import android.util.Log;
-import android.util.Xml;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -17,7 +13,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +33,9 @@ public class AmazonRequest {
     private final String ENDPOINT = "ecs.amazonaws.com";
     private SignedRequestsHelper helper;
 
-
-
     private ArrayList<ResultItem> items = new ArrayList<>();
 
+    private VolleyRequestSingleton requestSingleton;
 
     public AmazonRequest(String keyID, String secretKey) {
 
@@ -53,12 +47,14 @@ public class AmazonRequest {
     }
 
     public ArrayList<ResultItem> getItems() {
-        return items;
+        ArrayList<ResultItem> temp = new ArrayList<>();
+        temp.addAll(items);
+        items.removeAll(items);
+        return temp;
     }
 
 
     public ArrayList<ResultItem> parseFeed() throws Exception {
-        ArrayList<ResultItem> results = new ArrayList<>();
         XmlPullParserFactory xmlPullParserFactory = XmlPullParserFactory.newInstance();
         XmlPullParser parser = xmlPullParserFactory.newPullParser();
         parser.setInput(new StringReader(xmlFile));
@@ -68,10 +64,10 @@ public class AmazonRequest {
             }
             String tagName = parser.getName();
             if(tagName.equals("Item")) {
-                results.add(readChild(parser));
+                items.add(readChild(parser));
             }
         }
-        return results;
+        return items;
     }
 
     public ResultItem readChild(XmlPullParser parser) throws Exception{
@@ -129,7 +125,6 @@ public class AmazonRequest {
         return result;
     }
 
-
     public void generateSignedRequestURL(String input, int pageNum) {
         Map<String, String> params = new HashMap<>();
         params.put("Service", "AWSECommerceService");
@@ -145,7 +140,7 @@ public class AmazonRequest {
     public void sendRequest(Context context, String input, int pageNum, final ServerCallback callback) {
         generateSignedRequestURL(input, pageNum);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestSingleton = VolleyRequestSingleton.getInstance(context.getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, signedRequestURL, new Response.Listener<String>() {
 
             @Override
@@ -164,7 +159,7 @@ public class AmazonRequest {
 
             }
         });
-        requestQueue.add(stringRequest);
+        requestSingleton.addToRequestQueue(stringRequest);
     }
 
     private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {

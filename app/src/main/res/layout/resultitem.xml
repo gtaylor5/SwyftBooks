@@ -16,9 +16,8 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="500dp"
             android:id="@+id/bookimage"
-            android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:layout_alignParentTop="true"
             android:layout_above="@+id/title"
@@ -28,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Book Title"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="@color/white"
                 android:id="@+id/title"
                 android:gravity="center_horizontal"

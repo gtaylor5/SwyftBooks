@@ -1,6 +1,8 @@
 package com.swyftlabs.swyftbooks;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,11 +38,19 @@ public class ResultItemViewHolder extends RecyclerView.ViewHolder {
         v = view;
     }
 
-    public void setViews(ResultItem item){
+    public void setViews(final ResultItem item){
         bookTitle.setText(item.getBookTitle());
         bookAuthor.setText(item.getBookAuthor());
         bookISBN.setText(item.getBookISBN());
-        Picasso.with(v.getContext()).load(item.getBookImageLink()).into(bookImage);
+        Picasso.with(v.getContext()).load(item.getBookImageLink()).fit().into(bookImage);
+        seeOffers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SeeOffersActivity.class);
+                intent.putExtra("item", item);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
 }

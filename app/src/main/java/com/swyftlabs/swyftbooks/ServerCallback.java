@@ -7,5 +7,8 @@ import java.util.ArrayList;
  */
 
 public interface ServerCallback {
-    void onSuccess(ArrayList<ResultItem> items);
+
+    <T> void onSuccess(T items);
+    <T> void onSuccess(ArrayList<T> items);
+
 }

@@ -1,12 +1,17 @@
 package com.swyftlabs.swyftbooks;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.v4.media.MediaBrowserServiceCompat;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
  * Created by Gerard on 2/16/2017.
  */
 
-public class ResultItem {
+public class ResultItem implements Parcelable{
 
     private String bookTitle;
     private String bookAuthor;
@@ -18,25 +23,27 @@ public class ResultItem {
     private String bookBinding;
     private String bookEAN;
 
-
-
     ArrayList<String> authors = new ArrayList<>();
     ArrayList<String> images = new ArrayList<>();
-
-
 
     public ResultItem() {
 
     }
 
+    public ResultItem(Parcel incoming){
+
+    }
+
     public String getBookAuthor() {
-        bookAuthor = "";
-        for(int i = 0; i < authors.size(); i++){
-            if(i == authors.size()-1){
-                bookAuthor += authors.get(i);
-                break;
+        if(bookAuthor == null) {
+            bookAuthor = "";
+            for (int i = 0; i < authors.size(); i++) {
+                if (i == authors.size() - 1) {
+                    bookAuthor += authors.get(i);
+                    break;
+                }
+                bookAuthor += authors.get(i) + ", ";
             }
-            bookAuthor += authors.get(i) + ", ";
         }
         return bookAuthor;
     }
@@ -86,7 +93,14 @@ public class ResultItem {
     }
 
     public String getBookImageLink() {
-        return images.get(0);
+        if(bookImageLink == null) {
+            bookImageLink = images.get(0);
+        }
+        return bookImageLink;
+    }
+
+    public String getBookImageLinkForParcel(){
+        return bookImageLink;
     }
 
     public void setBookImageLink(String bookImageLink) {
@@ -108,4 +122,46 @@ public class ResultItem {
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getBookImageLink());
+        dest.writeString(getBookTitle());
+        dest.writeString(getBookAuthor());
+        dest.writeString((getBookISBN() != null) ? getBookISBN() : getBookEAN());
+        dest.writeString(getBookEdition());
+        dest.writeString(getBookPublisher());
+        dest.writeString(getBookBinding());
+        dest.writeString(getBookListPrice());
+    }
+
+    public static final Parcelable.Creator<ResultItem> CREATOR = new Parcelable.Creator<ResultItem>(){
+
+        @Override
+        public ResultItem createFromParcel(Parcel incoming) {
+            ResultItem item = new ResultItem();
+            item.setBookImageLink(incoming.readString());
+            item.setBookTitle(incoming.readString());
+            item.setBookAuthor(incoming.readString());
+            item.setBookISBN(incoming.readString());
+            item.setBookEdition(incoming.readString());
+            item.setBookPublisher(incoming.readString());
+            item.setBookBinding(incoming.readString());
+            item.setBookListPrice(incoming.readString());
+            return item;
+        }
+
+        @Override
+        public ResultItem[] newArray(int size) {
+            return new ResultItem[size];
+        }
+
+
+    };
+
 }
