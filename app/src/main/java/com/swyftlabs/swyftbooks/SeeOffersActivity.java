@@ -25,6 +25,8 @@ public class SeeOffersActivity extends AppCompatActivity {
 
     private ValoreBooksRequest valoreBooksRequest;
     private CommissionJunctionRequest commissionJunctionRequest;
+    
+    private ResultItem item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class SeeOffersActivity extends AppCompatActivity {
         bindingView = (TextView) findViewById(R.id.binding);
         listPriceView = (TextView) findViewById(R.id.listPrice);
 
-        ResultItem item = getIntent().getParcelableExtra("item");
+        item = getIntent().getParcelableExtra("item");
 
         Picasso.with(getApplicationContext()).load(item.getBookImageLink()).fit().into(bookImage);
         titleView.setText(item.getBookTitle());
@@ -75,8 +77,25 @@ public class SeeOffersActivity extends AppCompatActivity {
                 }
             }
         });
-        commissionJunctionRequest.setRequestURL(isbnView.getText().toString());
-        commissionJunctionRequest.sendRequest(getApplicationContext(), isbnView.getText().toString(), new ServerCallback() {
+        //Barnes and Noble Only
+        commissionJunctionRequest.setRequestURL(item.getBookISBN());
+        commissionJunctionRequest.sendRequest(getApplicationContext(), "", new ServerCallback() {
+            @Override
+            public <T> void onSuccess(T items) {
+
+            }
+
+            @Override
+            public <T> void onSuccess(ArrayList<T> items) {
+                for(Object o : items){
+                    Offer m = (o instanceof  Offer) ? ((Offer) o) : null;
+                    m.printOffer();
+                }
+            }
+        });
+        
+        commissionJunctionRequest.setRequestURL(item.getBookEAN());
+        commissionJunctionRequest.sendRequest(getApplicationContext(), "", new ServerCallback() {
             @Override
             public <T> void onSuccess(T items) {
 
