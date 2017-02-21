@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
                     awsSecretKey = remoteConfig.getString("AWS_SECRET_KEY");
                     amazonRequest = new AmazonRequest(awsSecretKeyID, awsSecretKey);
                 }else {
-                    awsSecretKeyID = remoteConfig.getString("AWS_ACCESS_KEY_ID");
-                    awsSecretKey = remoteConfig.getString("AWS_SECRET_KEY");
+                    awsSecretKeyID = defaults.get("AWS_ACCESS_KEY_ID");
+                    awsSecretKey = defaults.get("AWS_SECRET_KEY");
                     amazonRequest = new AmazonRequest(awsSecretKeyID, awsSecretKey);
                 }
             }
