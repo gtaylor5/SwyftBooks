@@ -2,11 +2,13 @@ package com.swyftlabs.swyftbooks;
 
 import android.util.Log;
 
+import java.util.Comparator;
+
 /**
  * Created by Gerard on 2/19/2017.
  */
 
-public class Offer {
+public class Offer{
 
     private TransactionType type;
     private String price;
@@ -14,6 +16,7 @@ public class Offer {
     private String link;
     private String condition;
     private String quantity;
+    private String retailer;
 
 
     public Offer () {
@@ -21,9 +24,15 @@ public class Offer {
     }
 
     public void printOffer(){
+        Log.i("AppInfo", type + " "+ ((price==null)?secondPrice:price) + " "+link+" "+retailer);
+    }
 
-        Log.i("AppInfo", type + " "+ ((price==null)?secondPrice:price) + " "+link);
+    public String getRetailer() {
+        return retailer;
+    }
 
+    public void setRetailer(String retailer) {
+        this.retailer = retailer;
     }
 
     public String getSecondPrice() {
@@ -73,4 +82,7 @@ public class Offer {
     public void setType(TransactionType type) {
         this.type = type;
     }
+
+
+
 }

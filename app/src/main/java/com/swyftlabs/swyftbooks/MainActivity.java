@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private int previousPage = 1;
     private boolean loading = false;
     private int previousNumberOfItems = 0;
+    private String currentSearchTerm = "";
 
     @Override
     protected void onStart() {
@@ -202,6 +203,12 @@ public class MainActivity extends AppCompatActivity {
                         showToast("Please enter an ISBN, Title or Author.");
                         return false;
                     }
+                    if(searchBar.getText().toString().equals(currentSearchTerm)){
+                        return false;
+                    }else{
+                        currentSearchTerm = searchBar.getText().toString();
+                        items.removeAll(items);
+                    }
                     amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
 
                         @Override
@@ -210,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                             adapter.dataSetChaged(items);
                             setRecyclerViewListener();
                             if(items.size() != 0) {
+                                manager.scrollToPosition(0);
                                 counter.setVisibility(View.VISIBLE);
                                 counter.setText(manager.findFirstVisibleItemPosition() + 1 + "/" + items.size());
                             }else{

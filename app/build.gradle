@@ -31,7 +31,7 @@ dependencies {
     compile 'commons-codec:commons-codec:1.10'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.google.android.gms:play-services-vision'
+
     testCompile 'junit:junit:4.12'
 }
 

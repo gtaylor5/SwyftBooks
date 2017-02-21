@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Book Title"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:textColor="@color/white"
                 android:id="@+id/title"
                 android:gravity="center_horizontal"

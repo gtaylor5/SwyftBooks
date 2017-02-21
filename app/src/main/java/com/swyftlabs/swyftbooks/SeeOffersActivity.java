@@ -24,6 +24,7 @@ public class SeeOffersActivity extends AppCompatActivity {
     private TextView listPriceView;
 
     private ValoreBooksRequest valoreBooksRequest;
+    private CommissionJunctionRequest commissionJunctionRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class SeeOffersActivity extends AppCompatActivity {
 
 
         valoreBooksRequest = new ValoreBooksRequest();
+        commissionJunctionRequest = new CommissionJunctionRequest();
         getOffers();
 
     }
@@ -73,6 +75,22 @@ public class SeeOffersActivity extends AppCompatActivity {
                 }
             }
         });
+        commissionJunctionRequest.setRequestURL(isbnView.getText().toString());
+        commissionJunctionRequest.sendRequest(getApplicationContext(), isbnView.getText().toString(), new ServerCallback() {
+            @Override
+            public <T> void onSuccess(T items) {
+
+            }
+
+            @Override
+            public <T> void onSuccess(ArrayList<T> items) {
+                for(Object o : items){
+                    Offer m = (o instanceof  Offer) ? ((Offer) o) : null;
+                    m.printOffer();
+                }
+            }
+        });
+
     }
 
 }

@@ -22,7 +22,8 @@
             android:orientation="vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:id="@+id/buyPrice">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:id="@+id/goToBuy"/>
 
         </LinearLayout>
 
@@ -45,7 +47,8 @@
             android:orientation="vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:id="@+id/sellPrice">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:id="@+id/goToSell"/>
 
         </LinearLayout>
 
@@ -68,7 +72,8 @@
             android:orientation="vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:id="@+id/rentPrice">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp"
+                android:id="@+id/goToRent"/>
 
         </LinearLayout>
     </LinearLayout>
