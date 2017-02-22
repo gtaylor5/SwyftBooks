@@ -1,4 +1,4 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Activities;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -10,7 +10,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -25,8 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.w3c.dom.Text;
+import com.swyftlabs.swyftbooks.R;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

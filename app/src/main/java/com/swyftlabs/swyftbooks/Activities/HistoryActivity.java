@@ -1,7 +1,9 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.swyftlabs.swyftbooks.R;
 
 public class HistoryActivity extends AppCompatActivity {
 

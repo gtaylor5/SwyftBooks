@@ -1,9 +1,7 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Classes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.media.MediaBrowserServiceCompat;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -23,8 +21,8 @@ public class ResultItem implements Parcelable{
     private String bookBinding;
     private String bookEAN;
 
-    ArrayList<String> authors = new ArrayList<>();
-    ArrayList<String> images = new ArrayList<>();
+    public ArrayList<String> authors = new ArrayList<>();
+    public ArrayList<String> images = new ArrayList<>();
 
     public ResultItem() {
 
@@ -133,7 +131,8 @@ public class ResultItem implements Parcelable{
         dest.writeString(getBookImageLink());
         dest.writeString(getBookTitle());
         dest.writeString(getBookAuthor());
-        dest.writeString((getBookISBN() != null) ? getBookISBN() : getBookEAN());
+        dest.writeString(getBookISBN());
+        dest.writeString(getBookEAN());
         dest.writeString(getBookEdition());
         dest.writeString(getBookPublisher());
         dest.writeString(getBookBinding());
@@ -149,6 +148,7 @@ public class ResultItem implements Parcelable{
             item.setBookTitle(incoming.readString());
             item.setBookAuthor(incoming.readString());
             item.setBookISBN(incoming.readString());
+            item.setBookEAN(incoming.readString());
             item.setBookEdition(incoming.readString());
             item.setBookPublisher(incoming.readString());
             item.setBookBinding(incoming.readString());

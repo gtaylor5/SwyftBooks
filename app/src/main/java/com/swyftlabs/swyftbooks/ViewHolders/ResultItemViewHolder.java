@@ -1,16 +1,16 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.ViewHolders;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
+import com.swyftlabs.swyftbooks.Activities.SeeOffersActivity;
+import com.swyftlabs.swyftbooks.Classes.ResultItem;
+import com.swyftlabs.swyftbooks.R;
 
 /**
  * Created by Gerard on 2/16/2017.

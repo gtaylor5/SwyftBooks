@@ -1,6 +1,5 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -9,12 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,10 +24,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.swyftlabs.swyftbooks.Classes.Offer;
+import com.swyftlabs.swyftbooks.Requests.AmazonRequest;
+import com.swyftlabs.swyftbooks.R;
+import com.swyftlabs.swyftbooks.Classes.ResultItem;
+import com.swyftlabs.swyftbooks.Adapters.SearchResultsAdapter;
+import com.swyftlabs.swyftbooks.Requests.ServerCallback;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void initializeRemoteConfig(){
-        Map<String, Object> defaults = new HashMap<>();
+        final Map<String, Object> defaults = new HashMap<>();
         defaults.put("AWS_ACCESS_KEY_ID", "AKIAJWKQAZX4GB63XKKA");
         defaults.put("AWS_SECRET_KEY","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");
         remoteConfig = FirebaseRemoteConfig.getInstance();
@@ -137,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
                     awsSecretKey = remoteConfig.getString("AWS_SECRET_KEY");
                     amazonRequest = new AmazonRequest(awsSecretKeyID, awsSecretKey);
                 }else {
-                    awsSecretKeyID = defaults.get("AWS_ACCESS_KEY_ID");
-                    awsSecretKey = defaults.get("AWS_SECRET_KEY");
+                    awsSecretKeyID = defaults.get("AWS_ACCESS_KEY_ID").toString();
+                    awsSecretKey = defaults.get("AWS_SECRET_KEY").toString();
                     amazonRequest = new AmazonRequest(awsSecretKeyID, awsSecretKey);
                 }
             }
@@ -176,15 +175,16 @@ public class MainActivity extends AppCompatActivity {
     public void reloadData() {
         amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
             @Override
-            public <T> void onSuccess(T items) {
-
-            }
-            @Override
             public <T> void onSuccess(ArrayList<T> item) {
                 counter.setVisibility(View.VISIBLE);
                 items.addAll(amazonRequest.getItems());
                 adapter.dataSetChaged(items);
                 previousPage++;
+            }
+
+            @Override
+            public void onSuccess(HashMap<String, ArrayList<Offer>> items) {
+
             }
         });
     }
@@ -210,7 +210,6 @@ public class MainActivity extends AppCompatActivity {
                         items.removeAll(items);
                     }
                     amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
-
                         @Override
                         public <T> void onSuccess(ArrayList<T> item) {
                             items = amazonRequest.getItems();
@@ -224,13 +223,11 @@ public class MainActivity extends AppCompatActivity {
                                 showToast("There were no results to show. Please try again.");
                             }
                         }
-
                         @Override
-                        public <T> void onSuccess(T items) {
+                        public void onSuccess(HashMap<String, ArrayList<Offer>> items) {
 
                         }
                     });
-
                     return true;
                 }
                 return false;

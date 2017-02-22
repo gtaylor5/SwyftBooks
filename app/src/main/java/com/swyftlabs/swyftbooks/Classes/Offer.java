@@ -1,4 +1,4 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Classes;
 
 import android.util.Log;
 
@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Created by Gerard on 2/19/2017.
  */
 
-public class Offer{
+public class Offer {
 
     private TransactionType type;
     private String price;
@@ -19,12 +19,19 @@ public class Offer{
     private String retailer;
 
 
+
     public Offer () {
 
     }
 
+
+
     public void printOffer(){
-        Log.i("AppInfo", type + " "+ ((price==null)?secondPrice:price) + " "+link+" "+retailer);
+        Log.i("AppInfo", type + " "+ ((price==null)?secondPrice:price) + " " + getRetailer());
+    }
+
+    public String getPrice(boolean f){
+        return ((getPrice()==null)?getSecondPrice() : getPrice());
     }
 
     public String getRetailer() {
@@ -83,6 +90,8 @@ public class Offer{
         this.type = type;
     }
 
-
+    public double getPriceAsDouble(){
+        return Double.parseDouble((getPrice() == null) ? getSecondPrice() : getPrice());
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Requests;
 
 /**********************************************************************************************
  * Copyright 2009 Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -21,8 +21,6 @@ package com.swyftlabs.swyftbooks;
  *
  */
 
-
-import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 

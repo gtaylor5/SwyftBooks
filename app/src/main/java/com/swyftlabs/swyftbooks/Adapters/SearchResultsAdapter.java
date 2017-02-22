@@ -1,10 +1,14 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.swyftlabs.swyftbooks.Classes.ResultItem;
+import com.swyftlabs.swyftbooks.R;
+import com.swyftlabs.swyftbooks.ViewHolders.ResultItemViewHolder;
 
 import java.util.ArrayList;
 

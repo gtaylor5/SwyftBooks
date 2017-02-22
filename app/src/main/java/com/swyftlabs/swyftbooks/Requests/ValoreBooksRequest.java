@@ -1,19 +1,19 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Requests;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Xml;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.swyftlabs.swyftbooks.Classes.Offer;
+import com.swyftlabs.swyftbooks.Classes.TransactionType;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.StringReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -44,15 +44,18 @@ public class ValoreBooksRequest implements RetailerRequest {
             String tagName = parser.getName();
             if(tagName.equals("rental-offer")) {
                 Offer tempOffer = readChild(parser);
+                tempOffer.setRetailer("ValoreBooks");
                 tempOffer.setType(TransactionType.RENT);
                 items.add(tempOffer);
             }else if(tagName.equals("sale-offer")){
                 Offer tempOffer = readChild(parser);
-                tempOffer.setType(TransactionType.SELL);
+                tempOffer.setRetailer("ValoreBooks");
+                tempOffer.setType(TransactionType.BUY);
                 items.add(tempOffer);
             }else if(tagName.equals("buy-offer")) {
                 Offer tempOffer = readChild(parser);
-                tempOffer.setType(TransactionType.BUY);
+                tempOffer.setRetailer("ValoreBooks");
+                tempOffer.setType(TransactionType.SELL);
                 items.add(tempOffer);
             }
         }

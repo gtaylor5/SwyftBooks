@@ -1,7 +1,8 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Requests;
 import android.content.Context;
 
-import java.util.ArrayList;
+import com.swyftlabs.swyftbooks.Classes.Offer;
+
 import org.xmlpull.v1.*;
 public interface RetailerRequest {
 

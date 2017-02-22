@@ -1,11 +1,14 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Requests;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.swyftlabs.swyftbooks.Classes.*;
+
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -30,6 +33,7 @@ public class AmazonRequest {
 
     private String xmlFile;
     private String signedRequestURL = "";
+    private String signedRequestURLISBN = "";
     private final String ENDPOINT = "ecs.amazonaws.com";
     private SignedRequestsHelper helper;
 
@@ -88,6 +92,8 @@ public class AmazonRequest {
                 item.setBookBinding(readText(parser));
             }else if(name.equals("EAN")){
                 item.setBookEAN(readText(parser));
+            }else if(name.equals("EANList")){
+                readChild(parser);
             }else if(name.equals("Edition")){
                 item.setBookEdition(readText(parser));
             }else if(name.equals("ISBN")){
@@ -98,6 +104,8 @@ public class AmazonRequest {
                 item.setBookPublisher(readText(parser));
             }else if(name.equals("Title")){
                 item.setBookTitle(readText(parser));
+            }else if(name.equals("EANListElement")){
+                item.setBookEAN(readText(parser));
             }else{
                 parser.next();
             }
@@ -135,6 +143,19 @@ public class AmazonRequest {
         params.put("Keywords", input);
         params.put("ItemPage", String.valueOf(pageNum));
         signedRequestURL = helper.sign(params);
+    }
+
+    public void generateSignedRequestURLISBN(String input){
+        System.out.println("Map form example:");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("Service", "AWSECommerceService");
+        params.put("AssociateTag", "swyftbooksapp-20");
+        params.put("Operation", "ItemLookup");
+        params.put("ResponseGroup", "ItemAttributes,OfferSummary");
+        params.put("SearchIndex", "All");
+        params.put("ItemId", input);
+        params.put("IdType", "ISBN");
+        signedRequestURLISBN = helper.sign(params);
     }
 
     public void sendRequest(Context context, String input, int pageNum, final ServerCallback callback) {

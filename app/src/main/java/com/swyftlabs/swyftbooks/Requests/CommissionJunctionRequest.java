@@ -1,4 +1,4 @@
-package com.swyftlabs.swyftbooks;
+package com.swyftlabs.swyftbooks.Requests;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,6 +8,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.swyftlabs.swyftbooks.Classes.Offer;
+import com.swyftlabs.swyftbooks.Classes.TransactionType;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -27,7 +29,7 @@ public class CommissionJunctionRequest implements RetailerRequest {
     private String requestURL = "";
     private HashMap<String, String> header = new HashMap<>();
     private VolleyRequestSingleton requestSingleton;
-    public ArrayList<Offer> items = new ArrayList<>();
+    public HashMap<String, ArrayList<Offer>> items = new HashMap<>();
 
     public CommissionJunctionRequest() {
         header.put("Authorization","0090ea50e79aad5591e67493c4fa6bcace035b8a2158f09b14a63256d2ec36ccd2a70519cf7e26fee2bb6c627a6c766656a7b59137678028209b492625e8e3a987/" +
@@ -46,8 +48,18 @@ public class CommissionJunctionRequest implements RetailerRequest {
             String tagName = parser.getName();
             if(tagName.equals("product")) {
                 Offer tempOffer = readChild(parser);
-                tempOffer.setType(TransactionType.RENT);
-                items.add(tempOffer);
+                if(tempOffer == null){
+                    continue;
+                }
+                if(items.keySet().contains(tempOffer.getRetailer())){
+                    ArrayList<Offer> temp = items.get(tempOffer.getRetailer());
+                    temp.add(tempOffer);
+                    items.put(tempOffer.getRetailer(), temp);
+                }else{
+                    ArrayList<Offer> offers = new ArrayList<>();
+                    offers.add(tempOffer);
+                    items.put(tempOffer.getRetailer(), offers);
+                }
             }
         }
     }
@@ -63,10 +75,12 @@ public class CommissionJunctionRequest implements RetailerRequest {
                 continue;
             }
             String name = parser.getName();
-            Log.i("AppInfo", name);
             if (name.equals("advertiser-name")) {
-                offer.setRetailer(readText(parser));
-                Log.i("AppInfo", readText(parser));
+                String mName = readText(parser);
+                if(mName.equals("eCampus.com")){
+                    return null;
+                }
+                offer.setRetailer(mName);
             } else if (name.equals("buy-url")) {
                 offer.setLink(readText(parser));
             } else if (name.equals("price")) {
@@ -74,8 +88,8 @@ public class CommissionJunctionRequest implements RetailerRequest {
             } else {
                 parser.next();
             }
-
         }
+        offer.setType(TransactionType.NONE);
         return offer;
     }
 
@@ -125,6 +139,5 @@ public class CommissionJunctionRequest implements RetailerRequest {
     @Override
     public void setRequestURL(String string) {
         requestURL = "https://product-search.api.cj.com/v2/product-search?website-id=8044180&advertiser-ids=joined&isbn="+string;
-        Log.i("AppInfo", requestURL);
     }
 }
