@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    Animation animation;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -57,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordText = (EditText) findViewById(R.id.passwordTextField);
 
         loginButton = (Button) findViewById(R.id.loginbutton);
+        animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -106,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loginButton.startAnimation(animation);
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
 

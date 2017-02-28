@@ -10,6 +10,7 @@ import android.text.Html;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -26,8 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.swyftlabs.swyftbooks.R;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -53,6 +52,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private ArrayList<String> schools;
     private ArrayAdapter<String> autoCompleteAdapter;
+
+    final Animation animation = AnimationUtils.loadAnimation(this, R.anim.bounce);
 
     @Override
     protected void onStart() {
@@ -82,7 +83,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference userRef = database.getReference("Users").child(user.getUid());
-                    DatabaseReference schoolRef = database.getReference("Schools").child(schoolTextView.getText().toString());
+                    DatabaseReference schoolRef = database.getReference("Schools").child(schoolTextView.getText().toString()).child("Students");
 
                     //Store user sign up information
 
@@ -153,6 +154,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signUpButton.startAnimation(animation);
                 String email = emailText.getText().toString();
                 String password = passwordText.getText().toString();
                 String confirm = confirmPasswordText.getText().toString();

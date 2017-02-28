@@ -20,7 +20,7 @@ public class DatabaseUtil {
         Uri uri = ContentUris.withAppendedId(BookInformationContactProvider.CONTENT_URI, id);
         String[] projection = {BookInformationContactProvider.COLUMN_ID,BookInformationContactProvider.COLUMN_TITLE
                 ,BookInformationContactProvider.COLUMN_AUTHOR, BookInformationContactProvider.COLUMN_ISBN,
-                BookInformationContactProvider.COLUMN_EDITION,BookInformationContactProvider.COLUMN_BINDING,BookInformationContactProvider.COLUMN_PUBLISHER,
+                BookInformationContactProvider.COLUMN_EDITION,BookInformationContactProvider.COLUMN_PUBLISHER,BookInformationContactProvider.COLUMN_BINDING,
                 BookInformationContactProvider.COLUMN_LISTPRICE, BookInformationContactProvider.COLUMN_BOOKIMAGE};
         Cursor cursor = null;
 
@@ -43,7 +43,7 @@ public class DatabaseUtil {
         Uri uri = BookInformationContactProvider.CONTENT_URI;
         String[] projection = {BookInformationContactProvider.COLUMN_ID,BookInformationContactProvider.COLUMN_TITLE
                 ,BookInformationContactProvider.COLUMN_AUTHOR, BookInformationContactProvider.COLUMN_ISBN, BookInformationContactProvider.COLUMN_EAN,
-                BookInformationContactProvider.COLUMN_EDITION,BookInformationContactProvider.COLUMN_BINDING,BookInformationContactProvider.COLUMN_PUBLISHER,
+                BookInformationContactProvider.COLUMN_EDITION,BookInformationContactProvider.COLUMN_PUBLISHER,BookInformationContactProvider.COLUMN_BINDING,
                 BookInformationContactProvider.COLUMN_LISTPRICE, BookInformationContactProvider.COLUMN_BOOKIMAGE};
         Cursor cursor = null;
 
