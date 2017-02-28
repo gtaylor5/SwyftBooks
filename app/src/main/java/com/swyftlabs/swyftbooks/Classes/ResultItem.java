@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class ResultItem implements Parcelable{
 
+
+    private long id = -1;
     private String bookTitle;
     private String bookAuthor;
     private String bookISBN;
@@ -25,7 +27,19 @@ public class ResultItem implements Parcelable{
     public ArrayList<String> images = new ArrayList<>();
 
     public ResultItem() {
+    }
 
+    public ResultItem(long id, String bookTitle, String bookAuthor, String bookISBN, String bookEAN, String bookEdition, String bookPublisher, String bookBinding, String bookListPrice, String bookImageLink) {
+        this.id = id;
+        this.bookTitle = bookTitle;
+        this.bookAuthor = bookAuthor;
+        this.bookISBN = bookISBN;
+        this.bookEAN = bookEAN;
+        this.bookEdition = bookEdition;
+        this.bookPublisher = bookPublisher;
+        this.bookBinding = bookBinding;
+        this.bookImageLink = bookImageLink;
+        this.bookListPrice = bookListPrice;
     }
 
     public ResultItem(Parcel incoming){
@@ -97,6 +111,14 @@ public class ResultItem implements Parcelable{
         return bookImageLink;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getBookImageLinkForParcel(){
         return bookImageLink;
     }
@@ -163,5 +185,4 @@ public class ResultItem implements Parcelable{
 
 
     };
-
 }

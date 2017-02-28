@@ -18,6 +18,36 @@ public class RetailerResultsItem {
     ArrayList<Offer> rentOffers = new ArrayList<>();
     ArrayList<Offer> sellOffers = new ArrayList<>();
 
+    double cheapestPrice = Double.MAX_VALUE;
+
+    public void setCheapestPrice(){
+        sortOffers();
+        if(buyOffers.size() > 0){
+            if(cheapestPrice > Double.parseDouble(buyOffers.get(0).getPrice())){
+                cheapestPrice = Double.parseDouble(buyOffers.get(0).getPrice());
+            }
+        }
+
+        if(rentOffers.size() > 0){
+            if(cheapestPrice > Double.parseDouble(rentOffers.get(0).getPrice())){
+                cheapestPrice = Double.parseDouble(rentOffers.get(0).getPrice());
+            }
+        }
+
+        if(offers.size() > 0){
+            if(cheapestPrice > Double.parseDouble(offers.get(0).getPrice())){
+                cheapestPrice = Double.parseDouble(rentOffers.get(0).getPrice());
+            }
+        }
+    }
+
+    public double getCheapestPrice() {
+        if(cheapestPrice == Double.MAX_VALUE){
+            setCheapestPrice();
+        }
+        return cheapestPrice;
+    }
+
     public void sortOffers(){
         Collections.sort(buyOffers, new Comparator<Offer>() {
             @Override

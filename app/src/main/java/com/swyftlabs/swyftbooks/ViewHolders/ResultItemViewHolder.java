@@ -7,10 +7,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import com.swyftlabs.swyftbooks.Activities.SeeOffersActivity;
 import com.swyftlabs.swyftbooks.Classes.ResultItem;
 import com.swyftlabs.swyftbooks.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Gerard on 2/16/2017.
@@ -46,6 +55,20 @@ public class ResultItemViewHolder extends RecyclerView.ViewHolder {
         seeOffers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                if(user != null){
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference userRef = database.getReference("Users").child(user.getUid());
+                    Map<String, String> data = new HashMap<>();
+                    data.put("Author", bookAuthor.getText().toString());
+                    data.put("ISBN", bookISBN.getText().toString());
+                    data.put("Search Date", (new SimpleDateFormat("MMM DD, YYYY")).format(new Date()));
+                    data.put("Title", bookTitle.getText().toString());
+                    userRef.child("Searches").child(bookISBN.getText().toString()).setValue(data);
+                }
+
                 Intent intent = new Intent(v.getContext(), SeeOffersActivity.class);
                 intent.putExtra("item", item);
                 v.getContext().startActivity(intent);

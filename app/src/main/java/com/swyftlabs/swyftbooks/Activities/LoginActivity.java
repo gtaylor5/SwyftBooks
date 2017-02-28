@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView createAccountTextView;
     private TextView forgotPasswordTextView;
     private TextView continueAsGuest;
+    private TextView appTitle;
 
     private EditText emailText;
     private EditText passwordText;
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         createAccountTextView = (TextView) findViewById(R.id.createAccount);
         forgotPasswordTextView = (TextView) findViewById(R.id.forgotPassword);
         continueAsGuest = (TextView) findViewById(R.id.continueAsGuest);
+        appTitle = (TextView) findViewById(R.id.appTitle);
 
         emailText = (EditText) findViewById(R.id.emailTextField);
         passwordText = (EditText) findViewById(R.id.passwordTextField);
@@ -82,15 +85,20 @@ public class LoginActivity extends AppCompatActivity {
     public void setTypeFaces() {
 
         Typeface loginScreenFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Avenir-Book.otf");
+        Typeface logoFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Arimo-Regular.ttf");
 
         createAccountTextView.setTypeface(loginScreenFont);
         forgotPasswordTextView.setTypeface(loginScreenFont);
         continueAsGuest.setTypeface(loginScreenFont);
+        appTitle.setTypeface(logoFont);
 
         emailText.setTypeface(loginScreenFont);
         passwordText.setTypeface(loginScreenFont);
 
         loginButton.setTypeface(loginScreenFont);
+
+        String swyftItal = "<i>Swyft</i>";
+        appTitle.setText(Html.fromHtml(swyftItal +"<b>Books</b>"));
 
     }
 

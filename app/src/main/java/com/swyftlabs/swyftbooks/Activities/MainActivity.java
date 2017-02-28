@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.swyftlabs.swyftbooks.Classes.Offer;
 import com.swyftlabs.swyftbooks.Requests.AmazonRequest;
 import com.swyftlabs.swyftbooks.R;
@@ -115,14 +117,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null){
+            if(result.getContents() == null){
 
-
-
+            }else{
+                previousPage = 1;
+                currentPage = 1;
+                searchBar.setText(result.getContents());
+                sendRequest();
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     public void initializeRemoteConfig(){
         final Map<String, Object> defaults = new HashMap<>();
-        defaults.put("AWS_ACCESS_KEY_ID", "AKIAJWKQAZX4GB63XKKA");
-        defaults.put("AWS_SECRET_KEY","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");
+        defaults.put("AWS_ACCESS_KEY_ID", "");
+        defaults.put("AWS_SECRET_KEY","");
         remoteConfig = FirebaseRemoteConfig.getInstance();
         remoteConfig.setDefaults(defaults);
         FirebaseRemoteConfigSettings settings = new FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(true).build();
@@ -168,8 +183,38 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    public void sendRequest(){
+        if(searchBar.getText().toString().length() == 0){
+            showToast("Please enter an ISBN, Title or Author.");
+            return;
+        }
+        if(searchBar.getText().toString().equals(currentSearchTerm)){
+            return;
+        }else{
+            currentSearchTerm = searchBar.getText().toString();
+            items.removeAll(items);
+        }
+        amazonRequest.sendRequest(getApplicationContext(), searchBar.getText().toString(), currentPage, new ServerCallback() {
+            @Override
+            public <T> void onSuccess(ArrayList<T> item) {
+                items = amazonRequest.getItems();
+                adapter.dataSetChaged(items);
+                setRecyclerViewListener();
+                if(items.size() != 0) {
+                    manager.scrollToPosition(0);
+                    counter.setVisibility(View.VISIBLE);
+                    counter.setText(manager.findFirstVisibleItemPosition() + 1 + "/" + items.size());
+                }else{
+                    showToast("There were no results to show. Please try again.");
+                }
+            }
+            @Override
+            public void onSuccess(HashMap<String, ArrayList<Offer>> items) {
 
+            }
+        });
     }
 
     public void reloadData() {
@@ -191,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSearchBarListener() {
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 View view = getCurrentFocus();
@@ -259,7 +305,10 @@ public class MainActivity extends AppCompatActivity {
         scanTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                segue(BarcodeScannerActivity.class);
+                IntentIntegrator intentIntegrator = new IntentIntegrator(MainActivity.this);
+                intentIntegrator.setOrientationLocked(false);
+                intentIntegrator.setPrompt("Scan a Barcode");
+                intentIntegrator.initiateScan();
             }
         });
 

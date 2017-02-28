@@ -28,7 +28,7 @@ public class VolleyRequestSingleton {
         return instance;
     }
 
-    private RequestQueue getRequestQueue() {
+    public RequestQueue getRequestQueue() {
 
         if(requestQueue == null){
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
@@ -36,6 +36,8 @@ public class VolleyRequestSingleton {
         requestQueue.start();
         return requestQueue;
     }
+
+
 
     public <T> void addToRequestQueue(Request<T> request){
         getRequestQueue().add(request);

@@ -1,5 +1,7 @@
 package com.swyftlabs.swyftbooks.Activities;
 
+import android.media.MediaPlayer;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,9 +10,12 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 import com.swyftlabs.swyftbooks.Adapters.RetailerResultsAdapter;
 import com.swyftlabs.swyftbooks.Classes.RetailerResultsItem;
+import com.swyftlabs.swyftbooks.ContentProviders.DatabaseUtil;
 import com.swyftlabs.swyftbooks.Requests.AbeBooksRequest;
 import com.swyftlabs.swyftbooks.Requests.CheggRequest;
 import com.swyftlabs.swyftbooks.Requests.CommissionJunctionRequest;
@@ -20,8 +25,11 @@ import com.swyftlabs.swyftbooks.Classes.ResultItem;
 import com.swyftlabs.swyftbooks.Requests.ECampusRequest;
 import com.swyftlabs.swyftbooks.Requests.ServerCallback;
 import com.swyftlabs.swyftbooks.Requests.ValoreBooksRequest;
+import com.swyftlabs.swyftbooks.Requests.VolleyRequestSingleton;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -49,7 +57,7 @@ public class SeeOffersActivity extends AppCompatActivity {
     private RetailerResultsAdapter adapter;
     
     private ResultItem item;
-    private ArrayList<RetailerResultsItem> retailerResultsItems = new ArrayList<>();
+    private volatile ArrayList<RetailerResultsItem> retailerResultsItems = new ArrayList<>();
     private HashSet<String> retailers = new HashSet<>();
 
     @Override
@@ -69,6 +77,9 @@ public class SeeOffersActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.priceResults);
 
         item = getIntent().getParcelableExtra("item");
+
+        DatabaseUtil.updateContact(getApplicationContext(), item);
+        removeDuplicates();
 
         Picasso.with(getApplicationContext()).load(item.getBookImageLink()).fit().into(bookImage);
         titleView.setText(item.getBookTitle());
@@ -92,9 +103,20 @@ public class SeeOffersActivity extends AppCompatActivity {
         eCampusRequest = new ECampusRequest();
         cheggRequest = new CheggRequest();
         getOffers();
-
         retailers.removeAll(retailers);
+    }
 
+    public void removeDuplicates(){
+        ArrayList<ResultItem> items = DatabaseUtil.getContacts(this);
+        HashSet<String> isbns = new HashSet<>();
+        for(ResultItem item : items){
+            if(isbns.contains(item.getBookISBN())){
+                DatabaseUtil.delete(this, item.getId());
+                DatabaseUtil.findContact(this, item.getId());
+            }else{
+                isbns.add(item.getBookISBN());
+            }
+        }
     }
 
     public void getOffers(){
@@ -110,8 +132,8 @@ public class SeeOffersActivity extends AppCompatActivity {
                 }else{
                     retailers.add(offers.get(0).getRetailer());
                 }
-                retailerResultsItems.add(new RetailerResultsItem(offers));
                 adapter.notifyDataSetChanged();
+                retailerResultsItems.add(new RetailerResultsItem(offers));
             }
 
             @Override
@@ -206,4 +228,9 @@ public class SeeOffersActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }

@@ -128,14 +128,14 @@ public class RetailerResultViewHolder<RetailerResultItem> extends RecyclerView.V
             ViewGroup.LayoutParams params = sellText.getLayoutParams();
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             sellText.setLayoutParams(params);
-            sellText.setText("Best Offer");
+            sellText.setText("Buy or Rent From");
+
+            buyOffer.setVisibility(View.GONE);
+            rentOffer.setVisibility(View.GONE);
 
             ViewGroup.LayoutParams buttonParams = sellPrice.getLayoutParams();
             buttonParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             sellPrice.setLayoutParams(buttonParams);
-
-            buyOffer.setVisibility(View.GONE);
-            rentOffer.setVisibility(View.GONE);
 
             sellPrice.setOnClickListener(new View.OnClickListener() {
                 @Override

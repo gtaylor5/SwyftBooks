@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.animation.Animation;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.swyftlabs.swyftbooks.R;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     private Button signUpButton;
 
     private TextView backToLogin;
+    private TextView appTitle;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -67,6 +71,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         schoolTextView = (AutoCompleteTextView) findViewById(R.id.schoolEditText);
         signUpButton = (Button) findViewById(R.id.signUpButton);
         backToLogin = (TextView) findViewById(R.id.backToLogin);
+        appTitle = (TextView) findViewById(R.id.appTitle);
 
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -129,6 +134,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     public void setFonts() {
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/Avenir-Book.otf");
+        Typeface logoFont = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Arimo-Regular.ttf");
 
         emailText.setTypeface(font);
         passwordText.setTypeface(font);
@@ -136,6 +142,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         backToLogin.setTypeface(font);
         signUpButton.setTypeface(font);
         schoolTextView.setTypeface(font);
+        appTitle.setTypeface(logoFont);
+
+        String swyftItal = "<i>Swyft</i>";
+        appTitle.setText(Html.fromHtml(swyftItal +"<b>Books</b>"));
 
     }
 
