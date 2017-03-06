@@ -15,6 +15,45 @@
       },
       "oauth_client": [
         {
+          "client_id": "183732433567-k9ome0t906lq35qfubq52nh1kjne5ksp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swyftlabs.swyftbooks",
+            "certificate_hash": "159d09a49cef70812d45a266876953e986aea871"
+          }
+        },
+        {
+          "client_id": "183732433567-ph919db672p0l2in22j55p1rp79vuef3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARWpxmnizQtmZI1AbyuDLdORoUkpgr6sM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183732433567:android:5f6718cfc45a6b2a",
+        "android_client_info": {
+          "package_name": "com.swyftlabs.swyftbooks1"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "183732433567-ph919db672p0l2in22j55p1rp79vuef3.apps.googleusercontent.com",
           "client_type": 3
         }
