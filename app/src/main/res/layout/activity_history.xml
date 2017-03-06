@@ -4,7 +4,7 @@
     android:id="@+id/activity_history"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.swyftlabs.swyftbooks.Activities.HistoryActivity"
+    tools:context="com.swyftlabs.swyftbooks1.Activities.HistoryActivity"
     android:background="@mipmap/androidbackground">
 
     <android.support.v7.widget.RecyclerView

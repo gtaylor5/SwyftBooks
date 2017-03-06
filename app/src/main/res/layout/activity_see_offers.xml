@@ -5,7 +5,7 @@
     android:id="@+id/activity_see_offers"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.swyftlabs.swyftbooks.Activities.SeeOffersActivity"
+    tools:context="com.swyftlabs.swyftbooks1.Activities.SeeOffersActivity"
     android:background="@mipmap/androidbackground"
     android:orientation="vertical">
 
