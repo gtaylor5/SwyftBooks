@@ -41,10 +41,12 @@
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
 
         <provider
-            android:name="com.swyftlabs.swyftbooks1.ContentProviders.BookInformationContactProvider"
-            android:authorities="com.swyftlabs.swyftbooks1"
+            android:name=".ContentProviders.BookInformationContentProvider"
+            android:authorities="item.swyftbooks.com"
             android:enabled="true"
-            android:exported="true"></provider>
+            android:exported="true">
+
+        </provider>
     </application>
 
 </manifest>

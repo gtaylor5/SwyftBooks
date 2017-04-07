@@ -82,8 +82,6 @@ public class SeeOffersActivity extends AppCompatActivity {
         listPriceView = (TextView) findViewById(R.id.listPrice);
         recyclerView = (RecyclerView) findViewById(R.id.priceResults);
 
-        Collections.synchronizedList(retailerResultsItems);
-
         item = getIntent().getParcelableExtra("item");
 
         DatabaseUtil.updateContact(getApplicationContext(), item);
@@ -189,8 +187,9 @@ public class SeeOffersActivity extends AppCompatActivity {
                         retailers.add(key);
                     }
                     retailerResultsItems.add(new RetailerResultsItem(items.get(key)));
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
+
             }
         });
 
@@ -210,8 +209,8 @@ public class SeeOffersActivity extends AppCompatActivity {
                         retailers.add(key);
                     }
                     retailerResultsItems.add(new RetailerResultsItem(items.get(key)));
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
             }
         });
 

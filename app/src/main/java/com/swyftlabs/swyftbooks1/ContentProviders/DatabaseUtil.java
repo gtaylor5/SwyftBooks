@@ -17,11 +17,11 @@ import java.util.ArrayList;
 public class DatabaseUtil {
 
     public static ResultItem findContact(Context context, long id){
-        Uri uri = ContentUris.withAppendedId(BookInformationContactProvider.CONTENT_URI, id);
-        String[] projection = {BookInformationContactProvider.COLUMN_ID,BookInformationContactProvider.COLUMN_TITLE
-                ,BookInformationContactProvider.COLUMN_AUTHOR, BookInformationContactProvider.COLUMN_ISBN,
-                BookInformationContactProvider.COLUMN_EDITION,BookInformationContactProvider.COLUMN_PUBLISHER,BookInformationContactProvider.COLUMN_BINDING,
-                BookInformationContactProvider.COLUMN_LISTPRICE, BookInformationContactProvider.COLUMN_BOOKIMAGE};
+        Uri uri = ContentUris.withAppendedId(BookInformationContentProvider.CONTENT_URI, id);
+        String[] projection = {BookInformationContentProvider.COLUMN_ID, BookInformationContentProvider.COLUMN_TITLE
+                , BookInformationContentProvider.COLUMN_AUTHOR, BookInformationContentProvider.COLUMN_ISBN,
+                BookInformationContentProvider.COLUMN_EDITION, BookInformationContentProvider.COLUMN_PUBLISHER, BookInformationContentProvider.COLUMN_BINDING,
+                BookInformationContentProvider.COLUMN_LISTPRICE, BookInformationContentProvider.COLUMN_BOOKIMAGE};
         Cursor cursor = null;
 
         try {
@@ -38,13 +38,14 @@ public class DatabaseUtil {
         }
     }
 
+
     public static ArrayList<ResultItem> getContacts(Context context){
         ArrayList<ResultItem> items = new ArrayList<>();
-        Uri uri = BookInformationContactProvider.CONTENT_URI;
-        String[] projection = {BookInformationContactProvider.COLUMN_ID,BookInformationContactProvider.COLUMN_TITLE
-                ,BookInformationContactProvider.COLUMN_AUTHOR, BookInformationContactProvider.COLUMN_ISBN, BookInformationContactProvider.COLUMN_EAN,
-                BookInformationContactProvider.COLUMN_EDITION,BookInformationContactProvider.COLUMN_PUBLISHER,BookInformationContactProvider.COLUMN_BINDING,
-                BookInformationContactProvider.COLUMN_LISTPRICE, BookInformationContactProvider.COLUMN_BOOKIMAGE};
+        Uri uri = BookInformationContentProvider.CONTENT_URI;
+        String[] projection = {BookInformationContentProvider.COLUMN_ID, BookInformationContentProvider.COLUMN_TITLE
+                , BookInformationContentProvider.COLUMN_AUTHOR, BookInformationContentProvider.COLUMN_ISBN, BookInformationContentProvider.COLUMN_EAN,
+                BookInformationContentProvider.COLUMN_EDITION, BookInformationContentProvider.COLUMN_PUBLISHER, BookInformationContentProvider.COLUMN_BINDING,
+                BookInformationContentProvider.COLUMN_LISTPRICE, BookInformationContentProvider.COLUMN_BOOKIMAGE};
         Cursor cursor = null;
 
         try {
@@ -68,21 +69,21 @@ public class DatabaseUtil {
     public static void updateContact(Context context, ResultItem resultItem){
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(BookInformationContactProvider.COLUMN_TITLE, resultItem.getBookTitle());
-        contentValues.put(BookInformationContactProvider.COLUMN_AUTHOR, resultItem.getBookAuthor());
-        contentValues.put(BookInformationContactProvider.COLUMN_ISBN, resultItem.getBookISBN());
-        contentValues.put(BookInformationContactProvider.COLUMN_EAN, resultItem.getBookEAN());
-        contentValues.put(BookInformationContactProvider.COLUMN_EDITION, resultItem.getBookEdition());
-        contentValues.put(BookInformationContactProvider.COLUMN_BINDING, resultItem.getBookBinding());
-        contentValues.put(BookInformationContactProvider.COLUMN_PUBLISHER, resultItem.getBookPublisher());
-        contentValues.put(BookInformationContactProvider.COLUMN_LISTPRICE, resultItem.getBookListPrice());
-        contentValues.put(BookInformationContactProvider.COLUMN_BOOKIMAGE, resultItem.getBookImageLink());
+        contentValues.put(BookInformationContentProvider.COLUMN_TITLE, resultItem.getBookTitle());
+        contentValues.put(BookInformationContentProvider.COLUMN_AUTHOR, resultItem.getBookAuthor());
+        contentValues.put(BookInformationContentProvider.COLUMN_ISBN, resultItem.getBookISBN());
+        contentValues.put(BookInformationContentProvider.COLUMN_EAN, resultItem.getBookEAN());
+        contentValues.put(BookInformationContentProvider.COLUMN_EDITION, resultItem.getBookEdition());
+        contentValues.put(BookInformationContentProvider.COLUMN_BINDING, resultItem.getBookBinding());
+        contentValues.put(BookInformationContentProvider.COLUMN_PUBLISHER, resultItem.getBookPublisher());
+        contentValues.put(BookInformationContentProvider.COLUMN_LISTPRICE, resultItem.getBookListPrice());
+        contentValues.put(BookInformationContentProvider.COLUMN_BOOKIMAGE, resultItem.getBookImageLink());
 
         if(resultItem.getId() != -1) {
-            Uri uri = ContentUris.withAppendedId(BookInformationContactProvider.CONTENT_URI, resultItem.getId());
+            Uri uri = ContentUris.withAppendedId(BookInformationContentProvider.CONTENT_URI, resultItem.getId());
             context.getContentResolver().update(uri, contentValues, null, null);
         } else{
-            Uri uri = context.getContentResolver().insert(BookInformationContactProvider.CONTENT_URI, contentValues);
+            Uri uri = context.getContentResolver().insert(BookInformationContentProvider.CONTENT_URI, contentValues);
             String id = uri.getLastPathSegment();
             long idLong = Long.parseLong(id);
             resultItem.setId(idLong);
@@ -91,8 +92,8 @@ public class DatabaseUtil {
 
     public static void delete(Context context, long itemId) {
         try {
-            Uri uri = BookInformationContactProvider.CONTENT_URI;
-            String selection = BookInformationContactProvider.COLUMN_ID + "=?";
+            Uri uri = BookInformationContentProvider.CONTENT_URI;
+            String selection = BookInformationContentProvider.COLUMN_ID + "=?";
             String selectionargs[] = { String.valueOf(itemId) };
             context.getContentResolver().delete(uri, selection, selectionargs);
         } catch (Exception e) {
